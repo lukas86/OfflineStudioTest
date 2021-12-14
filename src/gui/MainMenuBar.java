@@ -5,34 +5,29 @@ import project.ProjectManager;
 import javax.swing.*;
 
 public class MainMenuBar extends JMenuBar {
+    JMenuItem newMenuItem;
+    JMenuItem loadMenuItem;
+    JMenuItem saveMenuItem;
+    JMenuItem closeMenuItem;
+    JMenuItem exitMenuItem;
+
     public MainMenuBar() {
         JMenu projectMenu = new JMenu("Project");
 
-        JMenuItem newMenuItem = new JMenuItem("New");
-        newMenuItem.addActionListener(e -> {
-            ProjectManager.createNewProject();
-        });
-        JMenuItem loadMenuItem = new JMenuItem("Load");
-        loadMenuItem.addActionListener(e -> {
-            ProjectManager.loadExistingProject();
-        });
+        newMenuItem = new JMenuItem("New");
+        newMenuItem.addActionListener(e -> ProjectManager.createNewProject());
 
-        JMenuItem saveMenuItem = new JMenuItem("Save");
-        saveMenuItem.addActionListener(e -> {
-            ProjectManager.saveCurrentProject();
-        });
+        loadMenuItem = new JMenuItem("Load");
+        loadMenuItem.addActionListener(e -> ProjectManager.loadExistingProject());
 
-        JMenuItem closeMenuItem = new JMenuItem("Close");
-        closeMenuItem.addActionListener(e -> {
-            ProjectManager.closeCurrentProject();
-        });
+        saveMenuItem = new JMenuItem("Save");
+        saveMenuItem.addActionListener(e -> ProjectManager.saveCurrentProject());
 
-        JMenuItem exitMenuItem = new JMenuItem("Exit");
-        exitMenuItem.addActionListener(e -> {
-//            ProjectManager.closeCurrentProject();
-//            System.exit(0);
-            ProjectManager.exit();
-        });
+        closeMenuItem = new JMenuItem("Close");
+        closeMenuItem.addActionListener(e -> ProjectManager.closeCurrentProject());
+
+        exitMenuItem = new JMenuItem("Exit");
+        exitMenuItem.addActionListener(e -> ProjectManager.exit());
 
         projectMenu.add(newMenuItem);
         projectMenu.add(loadMenuItem);
@@ -42,5 +37,13 @@ public class MainMenuBar extends JMenuBar {
         projectMenu.add(exitMenuItem);
 
         add(projectMenu);
+    }
+
+    public void setEnabled(boolean[] enabledArray) {
+        newMenuItem.setEnabled(enabledArray[0]);
+        loadMenuItem.setEnabled(enabledArray[1]);
+        saveMenuItem.setEnabled(enabledArray[2]);
+        closeMenuItem.setEnabled(enabledArray[3]);
+        exitMenuItem.setEnabled(enabledArray[4]);
     }
 }

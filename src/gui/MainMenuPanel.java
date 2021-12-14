@@ -1,5 +1,7 @@
 package gui;
 
+import project.ProjectManager;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,22 +11,15 @@ public class MainMenuPanel extends JPanel {
         this.setBackground(Color.CYAN);
 
         JButton newProjectButton = new JButton("Create New Project");
-        newProjectButton.addActionListener(e -> {
-            //TODO:
-            MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
-        });
+        newProjectButton.addActionListener(e -> ProjectManager.createNewProject());
         this.add(newProjectButton);
 
         JButton loadProjectButton = new JButton("Load Existing Project");
-        loadProjectButton.addActionListener(e -> {
-            //TODO:
-        });
+        loadProjectButton.addActionListener(e -> ProjectManager.loadExistingProject());
         this.add(loadProjectButton);
 
         JButton exitButton = new JButton("Exit");
-        exitButton.addActionListener(e -> {
-            //TODO:
-        });
+        exitButton.addActionListener(e -> ProjectManager.exit());
         this.add(exitButton);
     }
 }

@@ -5,6 +5,8 @@ import gui.dialog.DialogManager;
 
 public class SavedProjectState extends ProjectState {
 
+    private final boolean[] menuEnabledArray = new boolean[] {true, true, false, true, true};
+
     @Override
     void createNewProject() {
         //TODO: DBCommunication.getListOfAllProjects()
@@ -38,5 +40,10 @@ public class SavedProjectState extends ProjectState {
     void closeCurrentProject() {
         ProjectManager.setProjectState(new NullProjectState());
         MainCardManager.changePanel(MainCardManager.MAIN_MENU_PANEL);
+    }
+
+    @Override
+    boolean[] getMenuItemEnabledArray() {
+        return menuEnabledArray;
     }
 }

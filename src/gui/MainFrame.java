@@ -1,6 +1,7 @@
 package gui;
 
 import gui.dialog.DialogManager;
+import project.NullProjectState;
 import project.ProjectManager;
 
 import javax.swing.*;
@@ -17,7 +18,11 @@ public class MainFrame {
         JFrame mainFrame = new JFrame();
         DialogManager.setFrame(mainFrame);
 
-        mainFrame.setJMenuBar(new MainMenuBar());
+        MainMenuBar mainMenuBar = new MainMenuBar();
+        ProjectManager.setMainMenuBar(mainMenuBar);
+        ProjectManager.setProjectState(new NullProjectState());
+
+        mainFrame.setJMenuBar(mainMenuBar);
         mainFrame.add(MainCardManager.getMainPanel());
 
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
