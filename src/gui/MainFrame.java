@@ -1,6 +1,7 @@
 package gui;
 
 import gui.dialog.DialogManager;
+import project.ProjectManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,8 +22,7 @@ public class MainFrame {
 
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent windowEvent){
-                System.exit(0);
+            public void windowClosing(WindowEvent windowEvent){ProjectManager.exit();
             }
         });
         mainFrame.setLocationRelativeTo(null);

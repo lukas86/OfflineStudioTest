@@ -29,8 +29,9 @@ public class MainMenuBar extends JMenuBar {
 
         JMenuItem exitMenuItem = new JMenuItem("Exit");
         exitMenuItem.addActionListener(e -> {
-            ProjectManager.closeCurrentProject();
-            System.exit(0);
+//            ProjectManager.closeCurrentProject();
+//            System.exit(0);
+            ProjectManager.exit();
         });
 
         projectMenu.add(newMenuItem);

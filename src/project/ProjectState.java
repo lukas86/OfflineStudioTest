@@ -1,10 +1,8 @@
 package project;
 
-public enum ProjectState {
-    NULL,
-    SAVED,
-    UNSAVED
+public abstract class ProjectState {
+    abstract void createNewProject();
+    abstract void saveCurrentProject();
+    abstract void loadExistingProject();
+    abstract void closeCurrentProject();
 }
-
-//TODO:
-// save, load, new, close

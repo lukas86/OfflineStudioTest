@@ -1,13 +1,13 @@
 package project;
 
 public class Project {
-    private ProjectState state = ProjectState.NULL;;
+    private ProjectStateEnum state = ProjectStateEnum.NULL;;
 
-    public ProjectState getState() {
+    public ProjectStateEnum getState() {
         return state;
     }
 
-    public void setState(ProjectState state) {
+    public void setState(ProjectStateEnum state) {
         this.state = state;
     }
 }
