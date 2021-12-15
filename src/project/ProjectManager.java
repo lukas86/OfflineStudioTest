@@ -1,12 +1,18 @@
 package project;
 
+import gui.MainFrame;
 import gui.MainMenuBar;
+
+import javax.swing.*;
 
 public class ProjectManager {
 
-    private final static Project currentProject = new Project();
+//    private final static Project currentProject = new Project();
     private static ProjectState projectState = new NullProjectState();
     private static MainMenuBar mainMenuBar;
+    private static JFrame mainFrame;
+
+    private static String projectName = "";
 
     public static void createNewProject() {
         projectState.createNewProject();
@@ -37,5 +43,21 @@ public class ProjectManager {
 
     public static void setMainMenuBar(MainMenuBar mainMenuBar) {
         ProjectManager.mainMenuBar = mainMenuBar;
+    }
+
+    public static void setFrameTitle(String projectName) {
+        mainFrame.setTitle("Offline Studio 3000 - " + projectName);
+    }
+
+    public static void setMainFrame(MainFrame mainFrame) {
+        ProjectManager.mainFrame = mainFrame;
+    }
+
+    public static void setProjectName(String projectName) {
+        ProjectManager.projectName = projectName;
+    }
+
+    public static String getProjectName() {
+        return projectName;
     }
 }

@@ -9,32 +9,46 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class MainFrame {
+public class MainFrame extends JFrame {
 
-    public static final int WIDTH = 960;
-    public static final int HEIGHT = 640;
+    private static final String OFFLINE_STUDIO_3000 = "Offline Studio 3000";
+
+    private static final int WIDTH = 960;
+    private static final int HEIGHT = 640;
 
     public MainFrame() {
-        JFrame mainFrame = new JFrame();
-        DialogManager.setFrame(mainFrame);
+        DialogManager.setFrame(this);
 
         MainMenuBar mainMenuBar = new MainMenuBar();
         ProjectManager.setMainMenuBar(mainMenuBar);
+        ProjectManager.setMainFrame(this);
         ProjectManager.setProjectState(new NullProjectState());
 
-        mainFrame.setJMenuBar(mainMenuBar);
-        mainFrame.add(MainCardManager.getMainPanel());
+        this.setJMenuBar(mainMenuBar);
+        this.add(MainCardManager.getMainPanel());
 
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.addWindowListener(new WindowAdapter() {
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent){ProjectManager.exit();
             }
         });
-        mainFrame.setLocationRelativeTo(null);
-        mainFrame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
-        mainFrame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        mainFrame.setLayout(null);
-        mainFrame.pack();
-        mainFrame.setVisible(true);
+//        mainFrame.setLocationRelativeTo(null);
+        //TODO: set Icon
+        this.setIconImage(null);
+        this.setMinimumSize(new Dimension(WIDTH, HEIGHT));
+        this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        this.setLayout(null);
+        this.pack();
+        this.setVisible(true);
     }
+
+    public void setProjectNameInTitle(String activeProjectName) {
+        setTitle(OFFLINE_STUDIO_3000 + " - " + activeProjectName);
+    }
+
+    //TODO: dodatne metode za stanje -> ločen klass?
+    // NullState -> OFFLINE_STUDIO_3000 ""
+    // UnsavedState -> OFFLINE_STUDIO_3000 - "project_name" [unsaved]
+    // SavedState ->  OFFLINE_STUDIO_3000 - "project_name" [saved]
+
 }

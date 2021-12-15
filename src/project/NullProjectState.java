@@ -19,7 +19,13 @@ public class NullProjectState extends ProjectState {
         }
 
         //TODO: DBCommunication.createNewProject(newProjectName)
+        // ?
+        // ProjectManager.createNewProject(validNewProjectName);
+        ProjectManager.setProjectName(validNewProjectName);
+        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
+
         ProjectManager.setProjectState(new SavedProjectState());
+
         MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
     }
 
@@ -31,9 +37,15 @@ public class NullProjectState extends ProjectState {
         //TODO: DBCommunication.getListOfAllProjects()
         String[] listOfProjects = new String[]{"test_project_#1", "test_project_#2"};
 
-        DialogManager.choseExistingProjectDialog(listOfProjects);
+        String chosenProjectName = DialogManager.choseExistingProjectDialog(listOfProjects);
 
         //TODO: DBCommunication.load()
+        // ?
+        // ProjectManager.load(chosenProjectName);
+        ProjectManager.setProjectName(chosenProjectName);
+
+        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
+
         ProjectManager.setProjectState(new SavedProjectState());
         MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
     }

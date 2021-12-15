@@ -19,6 +19,11 @@ public class SavedProjectState extends ProjectState {
         }
 
         //TODO: DBCommunication.createNewProject(newProjectName)
+        // ?
+        // ProjectManager.createNewProject(validNewProjectName);
+        ProjectManager.setProjectName(validNewProjectName);
+        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
+
         ProjectManager.setProjectState(new SavedProjectState());
     }
 
@@ -30,15 +35,27 @@ public class SavedProjectState extends ProjectState {
         //TODO: DBCommunication.getListOfAllProjects()
         String[] listOfProjects = new String[]{"test_project_#1", "test_project_#2"};
 
-        DialogManager.choseExistingProjectDialog(listOfProjects);
+        String chosenProjectName = DialogManager.choseExistingProjectDialog(listOfProjects);
 
         //TODO: DBCommunication.load()
+        // ?
+        // ProjectManager.load(chosenProjectName);
+        ProjectManager.setProjectName(chosenProjectName);
+
+        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
+
         ProjectManager.setProjectState(new SavedProjectState());
     }
 
     @Override
     void closeCurrentProject() {
+        //TODO:
+        // ?
+        // ProjectManager.closeCurrentProject();
+        ProjectManager.setProjectName("");
+
         ProjectManager.setProjectState(new NullProjectState());
+        ProjectManager.setFrameTitle(ProjectManager.getProjectName());
         MainCardManager.changePanel(MainCardManager.MAIN_MENU_PANEL);
     }
 

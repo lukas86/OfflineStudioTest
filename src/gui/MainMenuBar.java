@@ -16,24 +16,24 @@ public class MainMenuBar extends JMenuBar {
 
         newMenuItem = new JMenuItem("New");
         newMenuItem.addActionListener(e -> ProjectManager.createNewProject());
+        projectMenu.add(newMenuItem);
 
         loadMenuItem = new JMenuItem("Load");
         loadMenuItem.addActionListener(e -> ProjectManager.loadExistingProject());
+        projectMenu.add(loadMenuItem);
 
         saveMenuItem = new JMenuItem("Save");
         saveMenuItem.addActionListener(e -> ProjectManager.saveCurrentProject());
+        projectMenu.add(saveMenuItem);
 
         closeMenuItem = new JMenuItem("Close");
         closeMenuItem.addActionListener(e -> ProjectManager.closeCurrentProject());
+        projectMenu.add(closeMenuItem);
+
+        projectMenu.add(new JSeparator());
 
         exitMenuItem = new JMenuItem("Exit");
         exitMenuItem.addActionListener(e -> ProjectManager.exit());
-
-        projectMenu.add(newMenuItem);
-        projectMenu.add(loadMenuItem);
-        projectMenu.add(saveMenuItem);
-        projectMenu.add(closeMenuItem);
-        projectMenu.add(new JSeparator());
         projectMenu.add(exitMenuItem);
 
         add(projectMenu);
