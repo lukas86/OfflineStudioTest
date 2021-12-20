@@ -20,16 +20,18 @@ public class MainFrame extends JFrame {
         DialogManager.setFrame(this);
 
         MainMenuBar mainMenuBar = new MainMenuBar();
-        ProjectManager.setMainMenuBar(mainMenuBar);
-        ProjectManager.setMainFrame(this);
-        ProjectManager.setProjectState(new NullProjectState());
+
+        ProjectManager projectManager = new ProjectManager();
+        projectManager.setMainMenuBar(mainMenuBar);
+        projectManager.setMainFrame(this);
+        projectManager.setProjectState(new NullProjectState(projectManager));
 
         this.setJMenuBar(mainMenuBar);
         this.add(MainCardManager.getMainPanel());
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent windowEvent){ProjectManager.exit();
+            public void windowClosing(WindowEvent windowEvent){projectManager.exit();
             }
         });
 //        mainFrame.setLocationRelativeTo(null);
@@ -42,9 +44,9 @@ public class MainFrame extends JFrame {
         this.setVisible(true);
     }
 
-    public void setProjectNameInTitle(String activeProjectName) {
-        setTitle(OFFLINE_STUDIO_3000 + " - " + activeProjectName);
-    }
+//    public void setProjectNameInTitle(String activeProjectName) {
+//        setTitle(OFFLINE_STUDIO_3000 + " - " + activeProjectName);
+//    }
 
     //TODO: dodatne metode za stanje -> ločen klass?
     // NullState -> OFFLINE_STUDIO_3000 ""

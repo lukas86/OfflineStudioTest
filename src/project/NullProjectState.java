@@ -5,7 +5,11 @@ import gui.dialog.DialogManager;
 
 public class NullProjectState extends ProjectState {
 
-    private final boolean[] menuEnabledArray = new boolean[] {true, true, false, false, true};
+    private static final boolean[] MENU_ENABLED_ARRAY = new boolean[] {true, true, false, false, true};
+
+    public NullProjectState(ProjectManager projectManager) {
+        super(projectManager, MENU_ENABLED_ARRAY);
+    }
 
     @Override
     public void createNewProject() {
@@ -22,9 +26,10 @@ public class NullProjectState extends ProjectState {
         // ?
         // ProjectManager.createNewProject(validNewProjectName);
         ProjectManager.setProjectName(validNewProjectName);
-        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
+//        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
+        ProjectManager.saveTitle();
 
-        ProjectManager.setProjectState(new SavedProjectState());
+        ProjectManager.setProjectState(new SavedProjectState(projectManager));
 
         MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
     }
@@ -44,17 +49,18 @@ public class NullProjectState extends ProjectState {
         // ProjectManager.load(chosenProjectName);
         ProjectManager.setProjectName(chosenProjectName);
 
-        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
+//        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
+        ProjectManager.saveTitle();
 
-        ProjectManager.setProjectState(new SavedProjectState());
+        ProjectManager.setProjectState(new SavedProjectState(projectManager));
         MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
     }
 
     @Override
     public void closeCurrentProject() {}
 
-    @Override
-    boolean[] getMenuItemEnabledArray() {
-        return menuEnabledArray;
-    }
+//    @Override
+//    boolean[] getMenuItemEnabledArray() {
+//        return menuEnabledArray;
+//    }
 }

@@ -5,7 +5,11 @@ import gui.dialog.DialogManager;
 
 public class UnsavedProjectState extends ProjectState {
 
-    private final boolean[] menuEnabledArray = new boolean[] {true, true, true, true, true};
+    private static final boolean[] MENU_ENABLED_ARRAY = new boolean[] {true, true, true, true, true};
+
+    public UnsavedProjectState(ProjectManager projectManager) {
+        super(projectManager, MENU_ENABLED_ARRAY);
+    }
 
     @Override
     void createNewProject() {
@@ -14,9 +18,9 @@ public class UnsavedProjectState extends ProjectState {
             //TODO: DBCommunication.saveProject();
             // ?
             // ProjectManager.save();
-            ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
+            projectManager.saveTitle();
 
-            ProjectManager.setProjectState(new SavedProjectState());
+            projectManager.setProjectState(new SavedProjectState(projectManager));
 
             MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
         }
@@ -33,10 +37,10 @@ public class UnsavedProjectState extends ProjectState {
         //TODO: DBCommunication.createNewProject(newProjectName)
         // ?
         // ProjectManager.createNewProject(validNewProjectName);
-        ProjectManager.setProjectName(validNewProjectName);
-        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
+        projectManager.setProjectName(validNewProjectName);
+        projectManager.saveTitle();
 
-        ProjectManager.setProjectState(new SavedProjectState());
+        projectManager.setProjectState(new SavedProjectState(projectManager));
 
         MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
     }
@@ -46,9 +50,9 @@ public class UnsavedProjectState extends ProjectState {
         //TODO: DBCommunication.save()
         // ?
         // ProjectManager.saveProject();
-        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [unsaved]");
+        projectManager.saveTitle();
 
-        ProjectManager.setProjectState(new SavedProjectState());
+        projectManager.setProjectState(new SavedProjectState(projectManager));
 
         MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
     }
@@ -63,11 +67,11 @@ public class UnsavedProjectState extends ProjectState {
         //TODO: DBCommunication.load()
         // ?
         // ProjectManager.load(chosenProjectName);
-        ProjectManager.setProjectName(chosenProjectName);
+        projectManager.setProjectName(chosenProjectName);
 
-        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
+        projectManager.saveTitle();
 
-        ProjectManager.setProjectState(new SavedProjectState());
+        projectManager.setProjectState(new SavedProjectState(projectManager));
         MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
     }
 
@@ -78,23 +82,23 @@ public class UnsavedProjectState extends ProjectState {
             // ?
             // ProjectManager.save();
 
-            ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
-            ProjectManager.setProjectState(new SavedProjectState());
+            projectManager.saveTitle();
+            projectManager.setProjectState(new SavedProjectState(projectManager));
             MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
         }
 
         //TODO:
         // ?
         // ProjectManager.closeCurrentProject();
-        ProjectManager.setProjectName("");
+        projectManager.setProjectName("");
 
-        ProjectManager.setProjectState(new NullProjectState());
-        ProjectManager.setFrameTitle(ProjectManager.getProjectName());
+        projectManager.setProjectState(new NullProjectState(projectManager));
+        projectManager.clearTitle();
         MainCardManager.changePanel(MainCardManager.MAIN_MENU_PANEL);
     }
 
     @Override
     boolean[] getMenuItemEnabledArray() {
-        return menuEnabledArray;
+        return MENU_ENABLED_ARRAY;
     }
 }

@@ -2,62 +2,77 @@ package project;
 
 import gui.MainFrame;
 import gui.MainMenuBar;
+import project.projectState.ProjectStateManager;
 
 import javax.swing.*;
 
 public class ProjectManager {
 
-//    private final static Project currentProject = new Project();
-    private static ProjectState projectState = new NullProjectState();
-    private static MainMenuBar mainMenuBar;
-    private static JFrame mainFrame;
+    private final ProjectStateManager projectStateManager = new ProjectStateManager();
+    private final TitleManager titleManager = new TitleManager();
+    private ProjectState projectState = new NullProjectState(this);
+    private MainMenuBar mainMenuBar;
 
-    private static String projectName = "";
+    public ProjectManager() {
 
-    public static void createNewProject() {
+    }
+
+    private String projectName = "";
+
+    public void create() {
         projectState.createNewProject();
     }
 
-    public static void saveCurrentProject() {
+    public void save() {
         projectState.saveCurrentProject();
     }
 
-    public static void loadExistingProject() {
+    public void load() {
         projectState.loadExistingProject();
     }
 
-    public static void closeCurrentProject() {
+    public void close() {
         projectState.closeCurrentProject();
     }
 
-    public static void exit() {
-        ProjectManager.closeCurrentProject();
+    public void exit() {
+        close();
         System.exit(0);
     }
 
-    public static void setProjectState(ProjectState projectState) {
-        ProjectManager.projectState = projectState;
+    public void setProjectState(ProjectState projectState) {
+        projectState = projectState;
         mainMenuBar.setEnabled(projectState.getMenuItemEnabledArray());
         mainMenuBar.revalidate();
     }
 
-    public static void setMainMenuBar(MainMenuBar mainMenuBar) {
-        ProjectManager.mainMenuBar = mainMenuBar;
+    public void setMainMenuBar(MainMenuBar mainMenuBar) {
+        mainMenuBar = mainMenuBar;
     }
 
-    public static void setFrameTitle(String projectName) {
-        mainFrame.setTitle("Offline Studio 3000 - " + projectName);
+
+    //TODO: to nekako počisti
+
+    public void setMainFrame(MainFrame mainFrame) {
+        titleManager.setMainFrame(mainFrame);
     }
 
-    public static void setMainFrame(MainFrame mainFrame) {
-        ProjectManager.mainFrame = mainFrame;
-    }
-
-    public static void setProjectName(String projectName) {
+    public void setProjectName(String projectName) {
         ProjectManager.projectName = projectName;
+        titleManager.setProjectName(projectName);
     }
 
-    public static String getProjectName() {
+    public String getProjectName() {
         return projectName;
     }
+
+
+    public void clearTitle() {
+        titleManager.clear();
+    }
+
+    public void saveTitle() {
+        titleManager.save();
+    }
+
 }

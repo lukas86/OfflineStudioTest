@@ -5,7 +5,11 @@ import gui.dialog.DialogManager;
 
 public class SavedProjectState extends ProjectState {
 
-    private final boolean[] menuEnabledArray = new boolean[] {true, true, false, true, true};
+    private static final boolean[] MENU_ENABLED_ARRAY = new boolean[] {true, true, false, true, true};
+
+    public SavedProjectState(ProjectManager projectManager) {
+        super(projectManager, MENU_ENABLED_ARRAY);
+    }
 
     @Override
     void createNewProject() {
@@ -22,9 +26,10 @@ public class SavedProjectState extends ProjectState {
         // ?
         // ProjectManager.createNewProject(validNewProjectName);
         ProjectManager.setProjectName(validNewProjectName);
-        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
+//        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
+        ProjectManager.saveTitle();
 
-        ProjectManager.setProjectState(new SavedProjectState());
+        ProjectManager.setProjectState(new SavedProjectState(projectManager));
     }
 
     @Override
@@ -42,9 +47,10 @@ public class SavedProjectState extends ProjectState {
         // ProjectManager.load(chosenProjectName);
         ProjectManager.setProjectName(chosenProjectName);
 
-        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
+//        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
+        ProjectManager.saveTitle();
 
-        ProjectManager.setProjectState(new SavedProjectState());
+        ProjectManager.setProjectState(new SavedProjectState(projectManager));
     }
 
     @Override
@@ -54,13 +60,14 @@ public class SavedProjectState extends ProjectState {
         // ProjectManager.closeCurrentProject();
         ProjectManager.setProjectName("");
 
-        ProjectManager.setProjectState(new NullProjectState());
-        ProjectManager.setFrameTitle(ProjectManager.getProjectName());
+        ProjectManager.setProjectState(new NullProjectState(projectManager));
+        ProjectManager.clearTitle();
+//        ProjectManager.setFrameTitle(ProjectManager.getProjectName());
         MainCardManager.changePanel(MainCardManager.MAIN_MENU_PANEL);
     }
 
     @Override
     boolean[] getMenuItemEnabledArray() {
-        return menuEnabledArray;
+        return MENU_ENABLED_ARRAY;
     }
 }
