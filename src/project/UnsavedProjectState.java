@@ -18,9 +18,12 @@ public class UnsavedProjectState extends ProjectState {
             //TODO: DBCommunication.saveProject();
             // ?
             // ProjectManager.save();
-            projectManager.saveTitle();
+
+            projectManager.setProjectName(projectManager.getProjectName());
 
             projectManager.setProjectState(new SavedProjectState(projectManager));
+
+            projectManager.setTitleStateToSaved();
 
             MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
         }
@@ -37,10 +40,12 @@ public class UnsavedProjectState extends ProjectState {
         //TODO: DBCommunication.createNewProject(newProjectName)
         // ?
         // ProjectManager.createNewProject(validNewProjectName);
+
         projectManager.setProjectName(validNewProjectName);
-        projectManager.saveTitle();
 
         projectManager.setProjectState(new SavedProjectState(projectManager));
+
+        projectManager.setTitleStateToSaved();
 
         MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
     }
@@ -50,9 +55,12 @@ public class UnsavedProjectState extends ProjectState {
         //TODO: DBCommunication.save()
         // ?
         // ProjectManager.saveProject();
-        projectManager.saveTitle();
+
+        projectManager.setProjectName(projectManager.getProjectName());
 
         projectManager.setProjectState(new SavedProjectState(projectManager));
+
+        projectManager.setTitleStateToSaved();
 
         MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
     }
@@ -67,11 +75,13 @@ public class UnsavedProjectState extends ProjectState {
         //TODO: DBCommunication.load()
         // ?
         // ProjectManager.load(chosenProjectName);
+
         projectManager.setProjectName(chosenProjectName);
 
-        projectManager.saveTitle();
-
         projectManager.setProjectState(new SavedProjectState(projectManager));
+
+        projectManager.setTitleStateToSaved();
+
         MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
     }
 
@@ -82,18 +92,25 @@ public class UnsavedProjectState extends ProjectState {
             // ?
             // ProjectManager.save();
 
-            projectManager.saveTitle();
+            projectManager.setProjectName(projectManager.getProjectName());
+
             projectManager.setProjectState(new SavedProjectState(projectManager));
+
+            projectManager.setTitleStateToSaved();
+
             MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
         }
 
         //TODO:
         // ?
         // ProjectManager.closeCurrentProject();
+
         projectManager.setProjectName("");
 
         projectManager.setProjectState(new NullProjectState(projectManager));
-        projectManager.clearTitle();
+
+        projectManager.setTitleStateToNull();
+
         MainCardManager.changePanel(MainCardManager.MAIN_MENU_PANEL);
     }
 

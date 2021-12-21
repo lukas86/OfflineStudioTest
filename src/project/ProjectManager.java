@@ -13,11 +13,11 @@ public class ProjectManager {
     private ProjectState projectState = new NullProjectState(this);
     private MainMenuBar mainMenuBar;
 
+    private String projectName = "";
+
     public ProjectManager() {
 
     }
-
-    private String projectName = "";
 
     public void create() {
         projectState.createNewProject();
@@ -41,13 +41,13 @@ public class ProjectManager {
     }
 
     public void setProjectState(ProjectState projectState) {
-        projectState = projectState;
+        this.projectState = projectState;
         mainMenuBar.setEnabled(projectState.getMenuItemEnabledArray());
         mainMenuBar.revalidate();
     }
 
     public void setMainMenuBar(MainMenuBar mainMenuBar) {
-        mainMenuBar = mainMenuBar;
+        this.mainMenuBar = mainMenuBar;
     }
 
 
@@ -58,7 +58,7 @@ public class ProjectManager {
     }
 
     public void setProjectName(String projectName) {
-        ProjectManager.projectName = projectName;
+        this.projectName = projectName;
         titleManager.setProjectName(projectName);
     }
 
@@ -67,11 +67,11 @@ public class ProjectManager {
     }
 
 
-    public void clearTitle() {
+    public void setTitleStateToNull() {
         titleManager.clear();
     }
 
-    public void saveTitle() {
+    public void setTitleStateToSaved() {
         titleManager.save();
     }
 

@@ -25,11 +25,12 @@ public class NullProjectState extends ProjectState {
         //TODO: DBCommunication.createNewProject(newProjectName)
         // ?
         // ProjectManager.createNewProject(validNewProjectName);
-        ProjectManager.setProjectName(validNewProjectName);
-//        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
-        ProjectManager.saveTitle();
 
-        ProjectManager.setProjectState(new SavedProjectState(projectManager));
+        projectManager.setProjectName(validNewProjectName);
+//        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
+        projectManager.setProjectState(new SavedProjectState(projectManager));
+
+        projectManager.setTitleStateToSaved();
 
         MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
     }
@@ -47,12 +48,13 @@ public class NullProjectState extends ProjectState {
         //TODO: DBCommunication.load()
         // ?
         // ProjectManager.load(chosenProjectName);
-        ProjectManager.setProjectName(chosenProjectName);
 
+        projectManager.setProjectName(chosenProjectName);
 //        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
-        ProjectManager.saveTitle();
+        projectManager.setProjectState(new SavedProjectState(projectManager));
 
-        ProjectManager.setProjectState(new SavedProjectState(projectManager));
+        projectManager.setTitleStateToSaved();
+
         MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
     }
 

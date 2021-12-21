@@ -25,11 +25,14 @@ public class SavedProjectState extends ProjectState {
         //TODO: DBCommunication.createNewProject(newProjectName)
         // ?
         // ProjectManager.createNewProject(validNewProjectName);
-        ProjectManager.setProjectName(validNewProjectName);
-//        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
-        ProjectManager.saveTitle();
 
-        ProjectManager.setProjectState(new SavedProjectState(projectManager));
+        projectManager.setProjectName(validNewProjectName);
+//        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
+        projectManager.setProjectState(new SavedProjectState(projectManager));
+
+        projectManager.setTitleStateToSaved();
+
+        MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
     }
 
     @Override
@@ -45,12 +48,14 @@ public class SavedProjectState extends ProjectState {
         //TODO: DBCommunication.load()
         // ?
         // ProjectManager.load(chosenProjectName);
-        ProjectManager.setProjectName(chosenProjectName);
 
+        projectManager.setProjectName(chosenProjectName);
 //        ProjectManager.setFrameTitle(ProjectManager.getProjectName() + " [saved]");
-        ProjectManager.saveTitle();
+        projectManager.setProjectState(new SavedProjectState(projectManager));
 
-        ProjectManager.setProjectState(new SavedProjectState(projectManager));
+        projectManager.setTitleStateToSaved();
+
+        MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
     }
 
     @Override
@@ -58,11 +63,13 @@ public class SavedProjectState extends ProjectState {
         //TODO:
         // ?
         // ProjectManager.closeCurrentProject();
-        ProjectManager.setProjectName("");
 
-        ProjectManager.setProjectState(new NullProjectState(projectManager));
-        ProjectManager.clearTitle();
+        projectManager.setProjectName("");
 //        ProjectManager.setFrameTitle(ProjectManager.getProjectName());
+        projectManager.setProjectState(new NullProjectState(projectManager));
+
+        projectManager.setTitleStateToNull();
+
         MainCardManager.changePanel(MainCardManager.MAIN_MENU_PANEL);
     }
 
