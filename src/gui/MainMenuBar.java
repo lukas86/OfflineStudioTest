@@ -11,29 +11,31 @@ public class MainMenuBar extends JMenuBar {
     JMenuItem closeMenuItem;
     JMenuItem exitMenuItem;
 
+    ProjectManager projectManager;
+
     public MainMenuBar() {
         JMenu projectMenu = new JMenu("Project");
 
         newMenuItem = new JMenuItem("New");
-        newMenuItem.addActionListener(e -> ProjectManager.create());
+        newMenuItem.addActionListener(e -> projectManager.create());
         projectMenu.add(newMenuItem);
 
         loadMenuItem = new JMenuItem("Load");
-        loadMenuItem.addActionListener(e -> ProjectManager.load());
+        loadMenuItem.addActionListener(e -> projectManager.load());
         projectMenu.add(loadMenuItem);
 
         saveMenuItem = new JMenuItem("Save");
-        saveMenuItem.addActionListener(e -> ProjectManager.save());
+        saveMenuItem.addActionListener(e -> projectManager.save());
         projectMenu.add(saveMenuItem);
 
         closeMenuItem = new JMenuItem("Close");
-        closeMenuItem.addActionListener(e -> ProjectManager.close());
+        closeMenuItem.addActionListener(e -> projectManager.close());
         projectMenu.add(closeMenuItem);
 
         projectMenu.add(new JSeparator());
 
         exitMenuItem = new JMenuItem("Exit");
-        exitMenuItem.addActionListener(e -> ProjectManager.exit());
+        exitMenuItem.addActionListener(e -> projectManager.exit());
         projectMenu.add(exitMenuItem);
 
         add(projectMenu);
@@ -45,5 +47,9 @@ public class MainMenuBar extends JMenuBar {
         saveMenuItem.setEnabled(enabledArray[2]);
         closeMenuItem.setEnabled(enabledArray[3]);
         exitMenuItem.setEnabled(enabledArray[4]);
+    }
+
+    public void setProjectManager(ProjectManager projectManager) {
+        this.projectManager = projectManager;
     }
 }

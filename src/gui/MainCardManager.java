@@ -1,6 +1,7 @@
 package gui;
 
 import gui.tabPanels.TabbedPanel;
+import project.ProjectManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,15 +17,15 @@ public class MainCardManager {
     public static final String MAIN_MENU_PANEL = "MAIN_MENE_PANEL";
     public static final String TABBED_PANEL = "TABBED_PANEL";
 
-    static {
-        mainPanel.add(new MainMenuPanel(), MAIN_MENU_PANEL);
+    public MainCardManager(ProjectManager projectManager) {
+        mainPanel.add(new MainMenuPanel(projectManager), MAIN_MENU_PANEL);
         mainPanel.add(new TabbedPanel(), TABBED_PANEL);
 
         mainPanel.setBackground(Color.BLUE);
         mainPanel.setBounds(0, 0, WIDTH, HEIGHT);
     }
 
-    public static JPanel getMainPanel() {
+    public JPanel getMainPanel() {
         return mainPanel;
     }
 
