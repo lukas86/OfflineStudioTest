@@ -2,11 +2,9 @@ package project;
 
 import gui.MainFrame;
 import gui.MainMenuBar;
-import project.projectState.ProjectStateManager;
 
 public class ProjectManager {
 
-    private final ProjectStateManager projectStateManager = new ProjectStateManager();
     private final TitleManager titleManager = new TitleManager();
     private ProjectState projectState = new NullProjectState(this);
     private MainMenuBar mainMenuBar;

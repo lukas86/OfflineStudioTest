@@ -1,8 +1,7 @@
 package project;
 
-import DB.DBCommunication;
-import gui.MainCardManager;
 import gui.dialog.DialogManager;
+import repository.ProjectRepository;
 
 public class NullProjectState extends ProjectState {
 
@@ -16,18 +15,14 @@ public class NullProjectState extends ProjectState {
 
     @Override
     public void createNewProject() {
-        String validNewProjectName = DialogManager.getValidNewProjectName(DBCommunication.getListOfProjects());
+        String validNewProjectName = DialogManager.getValidNewProjectName(
+                ProjectRepository.getListOfProjects());
 
         if(validNewProjectName == null) {
             return;
         }
 
-        // TODO: ProjectManager.createNewProject(validNewProjectName);
-        DBCommunication.createNewProject(validNewProjectName);
-
-        projectManager.setProjectName(validNewProjectName);
-        projectManager.setProjectState(new SavedProjectState(projectManager));
-        MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
+        create(validNewProjectName);
     }
 
     @Override
@@ -36,14 +31,13 @@ public class NullProjectState extends ProjectState {
     @Override
     public void loadExistingProject() {
         String chosenProjectName = DialogManager.choseExistingProjectDialog(
-                DBCommunication.getListOfProjects());
+                ProjectRepository.getListOfProjects());
 
-        // TODO: DBCommunication.load()
-        // ProjectManager.load(chosenProjectName);
+        if(chosenProjectName == null) {
+            return;
+        }
 
-        projectManager.setProjectName(chosenProjectName);
-        projectManager.setProjectState(new SavedProjectState(projectManager));
-        MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
+        load(chosenProjectName);
     }
 
     @Override

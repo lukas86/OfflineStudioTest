@@ -1,8 +1,7 @@
 package project;
 
-import DB.DBCommunication;
-import gui.MainCardManager;
 import gui.dialog.DialogManager;
+import repository.ProjectRepository;
 
 public class SavedProjectState extends ProjectState {
 
@@ -15,45 +14,33 @@ public class SavedProjectState extends ProjectState {
     }
 
     @Override
-    void createNewProject() {
+    public void createNewProject() {
         String validNewProjectName = DialogManager.getValidNewProjectName(
-                DBCommunication.getListOfProjects());
+                ProjectRepository.getListOfProjects());
 
         if (validNewProjectName == null) {
             return;
         }
 
-        // TODO: ProjectManager.createNewProject(validNewProjectName);
-        DBCommunication.createNewProject(validNewProjectName);
-
-        projectManager.setProjectName(validNewProjectName);
-        projectManager.setProjectState(new SavedProjectState(projectManager));
-        MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
+        create(validNewProjectName);
     }
 
     @Override
-    void saveCurrentProject() {}
+    public void saveCurrentProject() {}
 
     @Override
-    void loadExistingProject() {
+    public void loadExistingProject() {
         String chosenProjectName = DialogManager.choseExistingProjectDialog(
-                DBCommunication.getListOfProjects());
+                ProjectRepository.getListOfProjects());
 
-        //TODO: DBCommunication.load()
-        // ProjectManager.load(chosenProjectName);
+        if(chosenProjectName == null) {
+            return;
+        }
+        load(chosenProjectName);
 
-        projectManager.setProjectName(chosenProjectName);
-        projectManager.setProjectState(new SavedProjectState(projectManager));
-        MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
     }
-
     @Override
-    void closeCurrentProject() {
-        //TODO:
-        // ProjectManager.closeCurrentProject();
-
-        projectManager.setProjectName("");
-        projectManager.setProjectState(new NullProjectState(projectManager));
-        MainCardManager.changePanel(MainCardManager.MAIN_MENU_PANEL);
+    public void closeCurrentProject() {
+        close();
     }
 }

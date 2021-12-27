@@ -1,15 +1,20 @@
 package repository;
 
 public class Repository {
-    void createProject() {
-        ProjectRepository.create();
 
-        ProjectSettingsRepository.create();
+    void createProject(String projectName) {
+        ProjectRepository.createNewProject(projectName);
 
-        PanelRepository.create();
+//        ProjectSettingsRepository.create();
+//
+//        PanelRepository.create();
+//
+//        ModuleRepository.create();
+//
+//        ZoneRepository.create();
+    }
 
-        ModuleRepository.create();
-
-        ZoneRepository.create();
+    String[] getListOfProjects() {
+        return ProjectRepository.getListOfProjects();
     }
 }
