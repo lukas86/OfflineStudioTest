@@ -4,8 +4,6 @@ import gui.MainFrame;
 import gui.MainMenuBar;
 import project.projectState.ProjectStateManager;
 
-import javax.swing.*;
-
 public class ProjectManager {
 
     private final ProjectStateManager projectStateManager = new ProjectStateManager();
@@ -42,16 +40,16 @@ public class ProjectManager {
 
     public void setProjectState(ProjectState projectState) {
         this.projectState = projectState;
+
         mainMenuBar.setEnabled(projectState.getMenuItemEnabledArray());
         mainMenuBar.revalidate();
+
+        titleManager.setStateDescription(projectState.getDescription());
     }
 
     public void setMainMenuBar(MainMenuBar mainMenuBar) {
         this.mainMenuBar = mainMenuBar;
     }
-
-
-    //TODO: to nekako počisti
 
     public void setMainFrame(MainFrame mainFrame) {
         titleManager.setMainFrame(mainFrame);
@@ -64,15 +62,6 @@ public class ProjectManager {
 
     public String getProjectName() {
         return projectName;
-    }
-
-
-    public void setTitleStateToNull() {
-        titleManager.clear();
-    }
-
-    public void setTitleStateToSaved() {
-        titleManager.save();
     }
 
 }
