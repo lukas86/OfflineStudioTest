@@ -1,7 +1,7 @@
 package gui;
 
 import gui.dialog.DialogManager;
-import project.NullProjectState;
+import project.projectState.NullProjectState;
 import project.ProjectManager;
 
 import javax.swing.*;

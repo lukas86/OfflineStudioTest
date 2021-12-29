@@ -1,15 +1,16 @@
-package project;
+package project.projectState;
 
 import gui.dialog.DialogManager;
+import project.ProjectManager;
 import repository.ProjectRepository;
 
-public class NullProjectState extends ProjectState {
+public class SavedProjectState extends ProjectState {
 
-    private static final boolean[] MENU_ENABLED_ARRAY = new boolean[] {true, true, false, false, true};
+    private static final boolean[] MENU_ENABLED_ARRAY = new boolean[] {true, true, false, true, true};
 
-    public static final String STATE_DESCRIPTION = "";
+    private static final String STATE_DESCRIPTION = " [saved]";
 
-    public NullProjectState(ProjectManager projectManager) {
+    public SavedProjectState(ProjectManager projectManager) {
         super(projectManager, MENU_ENABLED_ARRAY, STATE_DESCRIPTION);
     }
 
@@ -18,7 +19,7 @@ public class NullProjectState extends ProjectState {
         String validNewProjectName = DialogManager.getValidNewProjectName(
                 ProjectRepository.getListOfProjects());
 
-        if(validNewProjectName == null) {
+        if (validNewProjectName == null) {
             return;
         }
 
@@ -39,7 +40,8 @@ public class NullProjectState extends ProjectState {
 
         load(chosenProjectName);
     }
-
     @Override
-    public void closeCurrentProject() {}
+    public void closeCurrentProject() {
+        close();
+    }
 }

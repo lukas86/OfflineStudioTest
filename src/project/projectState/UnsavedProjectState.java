@@ -1,6 +1,7 @@
-package project;
+package project.projectState;
 
 import gui.dialog.DialogManager;
+import project.ProjectManager;
 import repository.ProjectRepository;
 
 public class UnsavedProjectState extends ProjectState {

@@ -1,41 +1,27 @@
 package DB;
 
 import java.sql.*;
+import java.util.Properties;
 
 public class DBCommunication {
-
-//    private static final List<String> projectList = new ArrayList<>();
-//
-//    static {
-//        projectList.add("test_project_#1");
-//        projectList.add("test_project_#2");
-//    }
-//
-//    public static String[] getListOfProjects() {
-//        return projectList.toArray(new String[projectList.size()]);
-//    }
-//
-//    public static void createNewProject(String projectName) {
-//        projectList.add(projectName);
-//    }
 
     private static final String CLASS_NAME = DBCommunication.class.getCanonicalName();
 
     private static final String SERVER_URL = "jdbc:postgresql://localhost:5433/";
     private static final String DRIVER = "org.postgresql.Driver";
-//    private static final String USERNAME = "ACP";
-//    private static final String PASSWORD = "acp3000";
+    private static final String USERNAME = "postgres";
+    private static final String PASSWORD = "admin";
 
-    private static Connection DBConnection;
+    private static Connection DBServerConnection;
 
-    public static boolean connect() {
+    //TODO: connect to server
+    public static boolean connectToServer() {
         try {
             Class.forName(DRIVER);
-//            Properties props = new Properties();
-//            props.setProperty("user", USERNAME);
-//            props.setProperty("password", PASSWORD);
-            DBConnection = DriverManager.getConnection(SERVER_URL);
-//            DBConnection = DriverManager.getConnection(URL, props);
+            Properties props = new Properties();
+            props.setProperty("user", USERNAME);
+            props.setProperty("password", PASSWORD);
+            DBServerConnection = DriverManager.getConnection(SERVER_URL, props);
 //            LOGCommunication.addLogMessage("INFO", "DBCommunication/connect", "DB communication OK", CLASS_NAME);
             return true;
         } catch (Exception e) {
@@ -45,23 +31,66 @@ public class DBCommunication {
         return false;
     }
 
-    public static void closeResources(String method, PreparedStatement statement, ResultSet rs) {
+    public static void closeServerResources(ResultSet resultSet, PreparedStatement preparedStatement,  Connection connection) {
         try {
-            if (rs != null) {
-                rs.close();
-            }
-        } catch (SQLException e) {
-//            LOGCommunication.addLogMessage("SEVERE", "DBCommunication/closeResources", e, CLASS_NAME);
-        }
-
-        try {
-            if (statement != null) {
-                statement.close();
+            if (resultSet != null) {
+                resultSet.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
 //            LOGCommunication.addLogMessage("SEVERE", "DBCommunication/closeResources", e, CLASS_NAME);
         }
+
+        try {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+//            LOGCommunication.addLogMessage("SEVERE", "DBCommunication/closeResources", e, CLASS_NAME);
+        }
+
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+//            LOGCommunication.addLogMessage("SEVERE", "DBCommunication/closeResources", e, CLASS_NAME);
+        }
+    }
+
+    public static Connection getDBServerConnection() {
+        try {
+            if (DBServerConnection.isClosed() || DBServerConnection == null) {
+                if (DBServerConnection != null) {
+                    DBServerConnection.close();
+                }
+                connectToServer();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+//            LOGCommunication.addLogMessage("SEVERE", "DBCommunication/getDBConnection", e, CLASS_NAME);
+        }
+        return DBServerConnection;
+    }
+
+    //TODO: get connection to specific database
+    private static Connection DBConnection;
+
+    public static boolean connectToDB(String projectName) {
+        try {
+            Class.forName(DRIVER);
+            Properties props = new Properties();
+            props.setProperty("user", USERNAME);
+            props.setProperty("password", PASSWORD);
+            String DB_URL = String.format("%s%s", SERVER_URL, projectName);
+            DBConnection = DriverManager.getConnection(DB_URL, props);
+            return true;
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static Connection getDBConnection() {
@@ -70,7 +99,7 @@ public class DBCommunication {
                 if (DBConnection != null) {
                     DBConnection.close();
                 }
-                connect();
+                connectToServer();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,5 +108,33 @@ public class DBCommunication {
         return DBConnection;
     }
 
+    public static void closeDBResources(ResultSet resultSet, PreparedStatement preparedStatement, Connection connection) {
+        try {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+//            LOGCommunication.addLogMessage("SEVERE", "DBCommunication/closeResources", e, CLASS_NAME);
+        }
+
+        try {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+//            LOGCommunication.addLogMessage("SEVERE", "DBCommunication/closeResources", e, CLASS_NAME);
+        }
+
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+//            LOGCommunication.addLogMessage("SEVERE", "DBCommunication/closeResources", e, CLASS_NAME);
+        }
+    }
 
 }

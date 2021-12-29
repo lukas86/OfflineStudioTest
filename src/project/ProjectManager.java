@@ -2,6 +2,8 @@ package project;
 
 import gui.MainFrame;
 import gui.MainMenuBar;
+import project.projectState.NullProjectState;
+import project.projectState.ProjectState;
 
 public class ProjectManager {
 

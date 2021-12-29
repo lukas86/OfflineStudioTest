@@ -1,6 +1,7 @@
-package project;
+package project.projectState;
 
 import gui.MainCardManager;
+import project.ProjectManager;
 import repository.ProjectRepository;
 
 public abstract class ProjectState {
@@ -23,11 +24,11 @@ public abstract class ProjectState {
     public abstract void loadExistingProject();
     public abstract void closeCurrentProject();
 
-    boolean[] getMenuItemEnabledArray() {
+    public boolean[] getMenuItemEnabledArray() {
         return menuEnabledArray;
     }
 
-    String getDescription() {   return description;   };
+    public String getDescription() {   return description;   };
 
     void create(String validNewProjectName) {
         //TODO: ProjectManager.createNewProject(validNewProjectName);
@@ -39,7 +40,7 @@ public abstract class ProjectState {
     void load(String chosenProjectName) {
         //TODO:
         // ProjectManager.load(chosenProjectName);
-        // ProjectRepository.load(chosenProjectName);
+        ProjectRepository.get(chosenProjectName);
 
         projectManager.setProjectName(chosenProjectName);
         projectManager.setProjectState(new SavedProjectState(projectManager));
@@ -54,7 +55,7 @@ public abstract class ProjectState {
         load(projectManager.getProjectName());
     }
 
-    public void close() {
+    void close() {
         //TODO: ProjectManager.closeCurrentProject();
 
         projectManager.setProjectName("");
