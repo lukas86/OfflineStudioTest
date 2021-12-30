@@ -2,14 +2,19 @@ package repository;
 
 import DB.DBCommunication;
 import model.Panel;
+import model.Module;
+import model.Setting;
+import model.Zone;
 
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProjectRepository {
+
     public static void createNewProject(String projectName) {
         try {
             System.out.println("STARTED creating new project");
@@ -45,9 +50,6 @@ public class ProjectRepository {
                 projectArray = projectList.toArray(new String[projectList.size()]);
 
                 DBCommunication.closeServerResources(resultSet, preparedStatement, connection);
-//                resultSet.close();
-//                preparedStatement.close();
-//                connection.close();
 
                 return projectArray;
             } else {
@@ -59,49 +61,24 @@ public class ProjectRepository {
         return null;
     }
 
-    public static void get(String projectName) {
+    public static void getProject(String projectName) {
         //TODO: return Project
-
         //TODO: get projectSettings
-        //TODO: get panels
         //TODO: get zones
         //TODO: get modules
-        try {
-            if (DBCommunication.connectToDB(projectName)) {
-                Connection connection = DBCommunication.getDBConnection();
-
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM panels ORDER BY panel_id ASC");
-
-                ResultSet resultSet = preparedStatement.executeQuery();
-
-                ArrayList<Panel> panelList = new ArrayList<>();
-
-                System.out.println("project: " + projectName + " contains panels:");
-                while (resultSet.next()) {
-//                    projectList.add(resultSet.getString(1));
-                    int id = resultSet.getInt(1);
-                    String description = resultSet.getString(2);
-                    boolean isLocal = resultSet.getBoolean(3);
-                    boolean isActive = resultSet.getBoolean(4);
-
-                    Panel panel = new Panel(id, description, isLocal, isActive);
-
-                    panelList.add(panel);
-                    System.out.println(panel);
-                }
-
-                DBCommunication.closeDBResources(resultSet, preparedStatement, connection);
-            } else {
-                System.out.println("Can not connect to " + projectName + " database");
-            }
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
+        //TODO: get panels
+        PanelRepository.getPanelsOfProject(projectName);
     }
 
-    public static void save() {
-        //TODO: UPSERT / UPDATE
-        //DBCommunication.update
+    public static void updateProject(String projectName) {
+        //TODO: kako spremenit ime projekta če hranimo samo obstoječe ime ne prejšnjo?
     }
+
+    public static void deleteProject(String projectName) {
+        //TODO: ali to sploh dovolimo?
+    }
+
+
+
 
 }

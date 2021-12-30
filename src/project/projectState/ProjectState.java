@@ -40,7 +40,7 @@ public abstract class ProjectState {
     void load(String chosenProjectName) {
         //TODO:
         // ProjectManager.load(chosenProjectName);
-        ProjectRepository.get(chosenProjectName);
+        ProjectRepository.getProject(chosenProjectName);
 
         projectManager.setProjectName(chosenProjectName);
         projectManager.setProjectState(new SavedProjectState(projectManager));

@@ -7,7 +7,7 @@ public class Panel {
     private boolean isLocal;
     private boolean isActive;
 
-    public Panel(int id, String description, boolean isLocal, boolean isActive) {
+    public Panel(int id, String description, boolean isLocal, boolean isActive, int panelType) {
         this.id = id;
         this.description = description;
         this.isLocal = isLocal;

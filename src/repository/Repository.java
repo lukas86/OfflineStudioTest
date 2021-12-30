@@ -5,13 +5,7 @@ public class Repository {
     void createProject(String projectName) {
         ProjectRepository.createNewProject(projectName);
 
-//        ProjectSettingsRepository.create();
-//
-//        PanelRepository.create();
-//
-//        ModuleRepository.create();
-//
-//        ZoneRepository.create();
+        //TODO: save -> delete project -> create new -> insert values
     }
 
     String[] getListOfProjects() {

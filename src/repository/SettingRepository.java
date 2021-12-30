@@ -1,39 +1,38 @@
 package repository;
 
 import DB.DBCommunication;
-import model.Panel;
-import model.Zone;
+import model.Setting;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.List;
 
-public class ZoneRepository {
-    //TODO: ZONES, kako ločit za kateri projekt gre, da ni potrebno vedno znova nastavljat
-    private static void getZonesOfProject(String projectName) {
+public class SettingRepository {
+
+    public static void getSettingsOfProject(String projectName) {
         try {
             if (DBCommunication.connectToDB(projectName)) {
                 Connection connection = DBCommunication.getDBConnection();
 
-                String sql = "SELECT * FROM zones ORDER BY zone_id ASC";
+                String sql = "SELECT * FROM setting";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
                 ResultSet resultSet = preparedStatement.executeQuery();
 
-                ArrayList<Zone> zones = new ArrayList<>();
+                //TODO: Settings object (key, value) or Map<Key, Value>?
+                //TODO: default values?
+                ArrayList<Setting> settings = new ArrayList<>();
 
                 System.out.println("project: " + projectName + " contains panels:");
                 while (resultSet.next()) {
-                    int id = resultSet.getInt(1);
-                    String description = resultSet.getString(2);
+                    String key = resultSet.getString(1);
+                    String value = resultSet.getString(2);
 
+                    Setting setting = new Setting(key, value);
 
-                    Zone zone = new Zone(id, description);
-
-                    zones.add(zone);
-                    System.out.println(zone);
+                    settings.add(setting);
+                    System.out.println(setting);
                 }
 
                 DBCommunication.closeDBResources(resultSet, preparedStatement, connection);
@@ -45,27 +44,29 @@ public class ZoneRepository {
         }
     }
 
-    public static void updateZonesOfProject(String projectName, List<Zone> zones) {
+    public static void updateSettingsOfProject(String projectName) {
         try {
             if (DBCommunication.connectToDB(projectName)) {
                 Connection connection = DBCommunication.getDBConnection();
 
-                ArrayList<Panel> panelList = new ArrayList<>();
+                ArrayList<Setting> settings = new ArrayList<>();
 
-                String UPDATE_PANEL_SQL = "UPDATE panels SET panel_description = ?, local_panel = ?, is_active = ? FROM WHERE panel_id = ?";
+                String UPDATE_SETTING_SQL = "UPDATE settings SET value = ? FROM WHERE key = ?";
 
                 //TODO: raje upsert?
-                String UPSERT_PANEL_SQL = "INSERT INTO zones(zone_id, zone_description) " +
-                        "VALUES (?, ?) " +
-                        "ON CONFLICT (zone_id) " +
-                        "DO UPDATE SET zone_description = EXCLUDED.zone_description";
+                String UPSERT_SETTING_SQL = "INSERT INTO settings(key, value,) " +
+                        "VALUES (?, ?) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value";
 
-                PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PANEL_SQL);
+                PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SETTING_SQL);
 
-                for(Zone zone : zones) {
-                    if(zone != null) {
-                        preparedStatement.setInt(1, zone.getId());
-                        preparedStatement.setString(2, zone.getDescription());
+                for(Setting setting : settings) {
+                    if(setting != null) {
+//                        preparedStatement.setString(1, setting.getKey());
+//                        preparedStatement.setString(2, setting.getValue());
+
+                        preparedStatement.setString(2, setting.getKey());
+                        preparedStatement.setString(1, setting.getValue());
+
                         preparedStatement.executeQuery();
                     }
                 }
@@ -86,5 +87,4 @@ public class ZoneRepository {
         }
     }
 
-    //TODO: kako pa DELETE? kako vedeti katere cone je potrebno pobrisat?
 }
