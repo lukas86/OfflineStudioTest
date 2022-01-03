@@ -1,17 +1,13 @@
 package repository;
 
-import DB.DBCommunication;
-import model.Panel;
-import model.Module;
-import model.Setting;
-import model.Zone;
+import DB.DBServerCommunication;
+import gui.dialog.DialogManager;
 
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ProjectRepository {
 
@@ -34,8 +30,8 @@ public class ProjectRepository {
     public static String[] getListOfProjects() {
         String[] projectArray;
         try {
-            if (DBCommunication.connectToServer()) {
-                Connection connection = DBCommunication.getDBServerConnection();
+            if (DBServerCommunication.connect()) {
+                Connection connection = DBServerCommunication.getConnection();
 
                 PreparedStatement preparedStatement = connection
                         .prepareStatement("SELECT datname FROM pg_database WHERE datistemplate = false");
@@ -49,7 +45,7 @@ public class ProjectRepository {
 
                 projectArray = projectList.toArray(new String[projectList.size()]);
 
-                DBCommunication.closeServerResources(resultSet, preparedStatement, connection);
+                DBServerCommunication.closeResources(resultSet, preparedStatement, connection);
 
                 return projectArray;
             } else {
@@ -62,23 +58,33 @@ public class ProjectRepository {
     }
 
     public static void getProject(String projectName) {
-        //TODO: return Project
-        //TODO: get projectSettings
-        //TODO: get zones
-        //TODO: get modules
-        //TODO: get panels
-        PanelRepository.getPanelsOfProject(projectName);
+
+        DialogManager.showWaitingToSaveAlert(projectName);
+
+//        //TODO: return Project
+//        SettingRepository.getSettingsOfProject(projectName);
+//
+//        PanelRepository.getPanelsOfProject(projectName);
+//        //TODO: get zones
+//        //TODO: get modules
+
+        //TODO: temp
+        try {
+            Thread.sleep(5000);
+        } catch(Exception ex) {
+
+        }
+        DialogManager.disposeOfWaitingDialog();
     }
 
     public static void updateProject(String projectName) {
         //TODO: kako spremenit ime projekta če hranimo samo obstoječe ime ne prejšnjo?
+//        DialogManager.showWaitingToLoadAlert(projectName);
+//        DialogManager.disposeOfWaitingDialog();
     }
 
     public static void deleteProject(String projectName) {
         //TODO: ali to sploh dovolimo?
     }
-
-
-
 
 }

@@ -1,6 +1,6 @@
 package repository;
 
-import DB.DBCommunication;
+import DB.DBProjectCommunication;
 import model.Panel;
 import model.Zone;
 
@@ -14,8 +14,9 @@ public class ZoneRepository {
     //TODO: ZONES, kako ločit za kateri projekt gre, da ni potrebno vedno znova nastavljat
     private static void getZonesOfProject(String projectName) {
         try {
-            if (DBCommunication.connectToDB(projectName)) {
-                Connection connection = DBCommunication.getDBConnection();
+            DBProjectCommunication.setCurrentDB(projectName);
+            if (DBProjectCommunication.connectToDB()) {
+                Connection connection = DBProjectCommunication.getDBConnection();
 
                 String sql = "SELECT * FROM zones ORDER BY zone_id ASC";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -36,7 +37,7 @@ public class ZoneRepository {
                     System.out.println(zone);
                 }
 
-                DBCommunication.closeDBResources(resultSet, preparedStatement, connection);
+                DBProjectCommunication.closeDBResources(resultSet, preparedStatement, connection);
             } else {
                 System.out.println("Can not connect to " + projectName + " database");
             }
@@ -47,8 +48,9 @@ public class ZoneRepository {
 
     public static void updateZonesOfProject(String projectName, List<Zone> zones) {
         try {
-            if (DBCommunication.connectToDB(projectName)) {
-                Connection connection = DBCommunication.getDBConnection();
+            DBProjectCommunication.setCurrentDB(projectName);
+            if (DBProjectCommunication.connectToDB()) {
+                Connection connection = DBProjectCommunication.getDBConnection();
 
                 ArrayList<Panel> panelList = new ArrayList<>();
 
@@ -77,7 +79,7 @@ public class ZoneRepository {
 //                    statement.executeBatch();
 //                }
 
-                DBCommunication.closeDBResources(null, preparedStatement, connection);
+                DBProjectCommunication.closeDBResources(null, preparedStatement, connection);
             } else {
                 System.out.println("Can not connect to " + projectName + " database");
             }

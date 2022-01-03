@@ -18,6 +18,10 @@ public class DialogManager {
     }
 
     public static String inputProjectNameDialog(String[] listOfExistingProjects) {
+        if(listOfExistingProjects == null) {
+            return null;
+        }
+
         return JOptionPane.showInputDialog(mainFrame,
                 "Input new project name",
                 "Project creation",
@@ -25,6 +29,10 @@ public class DialogManager {
     }
 
     public static String choseExistingProjectDialog(String[] listOfExistingProjects) {
+        if(listOfExistingProjects == null) {
+            return null;
+        }
+
         return (String)JOptionPane.showInputDialog(mainFrame,
                 "Choose which project you wish to open.",
                 "Open project", JOptionPane.PLAIN_MESSAGE,
@@ -38,10 +46,18 @@ public class DialogManager {
     }
 
     public static void showProjectNameIsTakenAlert(String newProjectName) {
+        if(newProjectName == null) {
+            return;
+        }
+
         JOptionPane.showMessageDialog(mainFrame, "Project name " + newProjectName + " is already in use, please provide different project name.");
     }
 
     public static String getValidNewProjectName(String[] listOfProjects) {
+        if(listOfProjects == null) {
+            return null;
+        }
+
         while(true) {
             String newProjectName = DialogManager.inputProjectNameDialog(listOfProjects);
 
@@ -59,5 +75,18 @@ public class DialogManager {
             }
         }
     }
+
+    public static void showWaitingToSaveAlert(String newProjectName) {
+        WaitDialog.showWaitDialog("Saving", newProjectName);
+    }
+
+    public static void showWaitingToLoadAlert(String newProjectName) {
+        WaitDialog.showWaitDialog("Loading", newProjectName);
+    }
+
+    public static void disposeOfWaitingDialog() {
+        WaitDialog.dispose();
+    }
+
 
 }

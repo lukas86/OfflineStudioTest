@@ -1,6 +1,6 @@
 package repository;
 
-import DB.DBCommunication;
+import DB.DBProjectCommunication;
 import model.Module;
 import model.Panel;
 
@@ -18,8 +18,9 @@ public class ModuleRepository {
                 return;
             }
 
-            if (DBCommunication.connectToDB(projectName)) {
-                Connection connection = DBCommunication.getDBConnection();
+            DBProjectCommunication.setCurrentDB(projectName);
+            if (DBProjectCommunication.connectToDB()) {
+                Connection connection = DBProjectCommunication.getDBConnection();
 
                 String sql = "SELECT * FROM modules WHERE panel_id = ? ORDER BY module_id ASC";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -42,7 +43,7 @@ public class ModuleRepository {
                     System.out.println(module);
                 }
 
-                DBCommunication.closeDBResources(resultSet, preparedStatement, connection);
+                DBProjectCommunication.closeDBResources(resultSet, preparedStatement, connection);
             } else {
                 System.out.println("Can not connect to " + projectName + " database");
             }
@@ -53,8 +54,9 @@ public class ModuleRepository {
 
     public static void updateModulesOfPanelOfProject(String projectName, Panel panel) {
         try {
-            if (DBCommunication.connectToDB(projectName)) {
-                Connection connection = DBCommunication.getDBConnection();
+            DBProjectCommunication.setCurrentDB(projectName);
+            if (DBProjectCommunication.connectToDB()) {
+                Connection connection = DBProjectCommunication.getDBConnection();
 
                 ArrayList<Module> modules = new ArrayList<>();
 
@@ -97,7 +99,7 @@ public class ModuleRepository {
 //                    statement.executeBatch();
 //                }
 
-                DBCommunication.closeDBResources(null, preparedStatement, connection);
+                DBProjectCommunication.closeDBResources(null, preparedStatement, connection);
             } else {
                 System.out.println("Can not connect to " + projectName + " database");
             }
