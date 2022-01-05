@@ -11,9 +11,8 @@ import java.util.ArrayList;
 public class PanelRepository {
 
     //TODO: PANELS
-    public static void getPanelsOfProject(String projectName) {
+    public static void getAll() {
         try {
-            DBProjectCommunication.setCurrentDB(projectName);
             if (DBProjectCommunication.connectToDB()) {
                 Connection connection = DBProjectCommunication.getDBConnection();
 
@@ -24,7 +23,6 @@ public class PanelRepository {
 
                 ArrayList<Panel> panels = new ArrayList<>();
 
-                System.out.println("project: " + projectName + " contains panels:");
                 while (resultSet.next()) {
                     int id = resultSet.getInt(1);
                     String description = resultSet.getString(2);
@@ -40,16 +38,16 @@ public class PanelRepository {
 
                 DBProjectCommunication.closeDBResources(resultSet, preparedStatement, connection);
             } else {
-                System.out.println("Can not connect to " + projectName + " database");
+                //TODO pobrisat?
+                System.out.println("Can not connect to database");
             }
         } catch(Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public static void updatePanelsOfProject(String projectName) {
+    public static void updatePanelsOfProject() {
         try {
-            DBProjectCommunication.setCurrentDB(projectName);
             if (DBProjectCommunication.connectToDB()) {
                 Connection connection = DBProjectCommunication.getDBConnection();
 
@@ -89,7 +87,8 @@ public class PanelRepository {
 
                 DBProjectCommunication.closeDBResources(null, preparedStatement, connection);
             } else {
-                System.out.println("Can not connect to " + projectName + " database");
+                //TODO pobrisat?
+                System.out.println("Can not connect to database");
             }
         } catch(Exception ex) {
             ex.printStackTrace();

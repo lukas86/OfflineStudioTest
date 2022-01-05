@@ -1,20 +1,22 @@
 package model;
 
 public class Zone {
-    int id;
-    String description;
+    private int zoneNumber;
+    private String description;
+    private int panelId;
 
-    public Zone(int id, String description) {
-        this.id = id;
+    public Zone(int zoneNumber, String description, int panelId) {
+        this.zoneNumber = zoneNumber;
         this.description = description;
+        this.panelId = panelId;
     }
 
-    public int getId() {
-        return id;
+    public int getZoneNumber() {
+        return zoneNumber;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setZoneNumber(int zoneNumber) {
+        this.zoneNumber = zoneNumber;
     }
 
     public String getDescription() {
@@ -25,11 +27,20 @@ public class Zone {
         this.description = description;
     }
 
+    public int getPanelId() {
+        return panelId;
+    }
+
+    public void setPanelId(int panelId) {
+        this.panelId = panelId;
+    }
+
     @Override
     public String toString() {
         return "Zone{" +
-                "id=" + id +
+                "zoneNumber=" + zoneNumber +
                 ", description='" + description + '\'' +
+                ", panelId=" + panelId +
                 '}';
     }
 }

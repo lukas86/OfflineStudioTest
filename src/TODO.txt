@@ -1,0 +1,36 @@
+
+TODO: resize table/list panel vs info panel ratio
+[] - zones
+[] - module inputs
+[] - module outputs
+[] - loop (address)
+
+TODO: address info panel
+[] - list of inputs
+[] - list of outputs
+
+TODO: address input info panel?
+[] - address input id
+[] - address input description
+[] - address input event type (general&specific)
+
+TODO: address output info panel?
+[] - address output id
+[] - address output description
+[] - address output types:
+0	"NIC"
+1	"ALARMIRANJE"
+2	"POZARNA ZASCITA"
+3	"POMOZNI"
+4	"PRENOS ALARMA"
+6	"PRENOS NAPAKE"
+5	"RESET"
+
+TODO: panel settings
+(add)
+[] - ip
+[] - comport
+[] - has redundant rpi
+[] - battery type
+----------------------------------------------------
+[] - parser from panel_id, key, value => PanelSetting

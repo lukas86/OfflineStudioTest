@@ -10,15 +10,49 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class ModuleRepository {
+    public static void getAll() {
+        try {
+            if (DBProjectCommunication.connectToDB()) {
+                Connection connection = DBProjectCommunication.getDBConnection();
+
+                String sql = "SELECT * FROM modules ORDER BY id_global ASC";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                ArrayList<Module> modules = new ArrayList<>();
+
+                while (resultSet.next()) {
+                    int idLocal = resultSet.getInt(1);
+                    int idGlobal = resultSet.getInt(2);
+                    int panelId = resultSet.getInt(3);
+                    int moduleTypeId = resultSet.getInt(4);
+                    boolean isActive = resultSet.getBoolean(5);
+                    String moduleDescription = resultSet.getString(6);
+
+                    Module module = new Module(idLocal, idGlobal, panelId, moduleTypeId, isActive, moduleDescription);
+
+                    modules.add(module);
+                    System.out.println(module);
+                }
+
+                DBProjectCommunication.closeDBResources(resultSet, preparedStatement, connection);
+            } else {
+                //TODO pobrisat?
+                System.out.println("Can not connect to database");
+            }
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+    }
     //TODO: ali se kar direktno nastavi podanemu panelu
     // ali raje vrače seznam modulov za podan panel_id?
-    public static void getModulesOfPanelOfProject(String projectName, Panel panel) {
+    public static void getModulesOfPanel(Panel panel) {
         try {
             if(panel == null) {
                 return;
             }
 
-            DBProjectCommunication.setCurrentDB(projectName);
             if (DBProjectCommunication.connectToDB()) {
                 Connection connection = DBProjectCommunication.getDBConnection();
 
@@ -31,13 +65,14 @@ public class ModuleRepository {
                 ArrayList<Module> modules = new ArrayList<>();
 
                 while (resultSet.next()) {
-                    int localId = resultSet.getInt(1);
-                    int globalId = resultSet.getInt(2);
-                    String description = resultSet.getString(3);
-                    int type = resultSet.getInt(4);
-                    int panelId = resultSet.getInt(5);
+                    int idLocal = resultSet.getInt(1);
+                    int idGlobal = resultSet.getInt(2);
+                    int panelId = resultSet.getInt(3);
+                    int moduleTypeId = resultSet.getInt(4);
+                    boolean isActive = resultSet.getBoolean(5);
+                    String moduleDescription = resultSet.getString(6);
 
-                    Module module = new Module(localId, globalId, description, type, panelId);
+                    Module module = new Module(idLocal, idGlobal, panelId, moduleTypeId, isActive, moduleDescription);
 
                     modules.add(module);
                     System.out.println(module);
@@ -45,31 +80,31 @@ public class ModuleRepository {
 
                 DBProjectCommunication.closeDBResources(resultSet, preparedStatement, connection);
             } else {
-                System.out.println("Can not connect to " + projectName + " database");
+                //TODO pobrisat?
+                System.out.println("Can not connect to database");
             }
         } catch(Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public static void updateModulesOfPanelOfProject(String projectName, Panel panel) {
+    public static void updateModules() {
         try {
-            DBProjectCommunication.setCurrentDB(projectName);
             if (DBProjectCommunication.connectToDB()) {
                 Connection connection = DBProjectCommunication.getDBConnection();
 
                 ArrayList<Module> modules = new ArrayList<>();
 
-                String UPDATE_MODULE_SQL = "UPDATE modules SET local_id = ?, global_id = ?, module_description = ?," +
-                        " type = ?, panel_id = ? FROM WHERE global_id = ?";
+                String UPDATE_MODULE_SQL = "UPDATE modules SET id_global = ?, id_local = ?, panel_id = ?, type = ?, module_description = ?" +
+                        "  FROM WHERE global_id = ?";
 
-                //TODO: raje upsert?
-                String UPSERT_MODULE_SQL = "INSERT INTO panels(local_id, global_id, module_description, type, panel_id) " +
-                        "VALUES (?, ?, ?, ?) " +
-                        "ON CONFLICT (global_id) DO UPDATE SET " +
-                        "local_id = EXCLUDED.local_id, global_id = EXCLUDED.global_id, " +
-                        "module_description = EXCLUDED.module_description, " +
-                        "type = EXCLUDED.type, panel_id = EXCLUDED.panel_id";
+//                //TODO: raje upsert?
+//                String UPSERT_MODULE_SQL = "INSERT INTO panels(local_id, global_id, module_description, type, panel_id) " +
+//                        "VALUES (?, ?, ?, ?) " +
+//                        "ON CONFLICT (global_id) DO UPDATE SET " +
+//                        "local_id = EXCLUDED.local_id, global_id = EXCLUDED.global_id, " +
+//                        "module_description = EXCLUDED.module_description, " +
+//                        "type = EXCLUDED.type, panel_id = EXCLUDED.panel_id";
 
                 PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_MODULE_SQL);
 
@@ -81,12 +116,12 @@ public class ModuleRepository {
 //                        preparedStatement.setInt(4, module.getType());
 //                        preparedStatement.setInt(5, module.getPanelId());
 
-                        preparedStatement.setInt(1, module.getLocalId());
-                        preparedStatement.setInt(2, module.getGlobalId());
-                        preparedStatement.setString(3, module.getDescription());
-                        preparedStatement.setInt(4, module.getType());
-                        preparedStatement.setInt(5, module.getPanelId());
-                        preparedStatement.setInt(6, module.getGlobalId());
+                        preparedStatement.setInt(1, module.getIdGlobal());
+                        preparedStatement.setInt(2, module.getIdLocal());
+                        preparedStatement.setInt(3, module.getPanelId());
+                        preparedStatement.setInt(4, module.getModuleTypeId());
+                        preparedStatement.setBoolean(5, module.isActive());
+                        preparedStatement.setString(6, module.getModuleDescription());
 
                         preparedStatement.executeQuery();
                     }
@@ -101,7 +136,8 @@ public class ModuleRepository {
 
                 DBProjectCommunication.closeDBResources(null, preparedStatement, connection);
             } else {
-                System.out.println("Can not connect to " + projectName + " database");
+                //TODO pobrisat?
+                System.out.println("Can not connect to database");
             }
         } catch(Exception ex) {
             ex.printStackTrace();

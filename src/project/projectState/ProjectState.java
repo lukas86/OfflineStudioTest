@@ -1,6 +1,7 @@
 package project.projectState;
 
 import gui.MainCardManager;
+import gui.dialog.DialogManager;
 import project.ProjectManager;
 import repository.ProjectRepository;
 
@@ -20,39 +21,77 @@ public abstract class ProjectState {
     }
 
     public abstract void createNewProject();
+
     public abstract void saveCurrentProject();
+
     public abstract void loadExistingProject();
+
     public abstract void closeCurrentProject();
 
     public boolean[] getMenuItemEnabledArray() {
         return menuEnabledArray;
     }
 
-    public String getDescription() {   return description;   };
-
-    void create(String validNewProjectName) {
-        //TODO: ProjectManager.createNewProject(validNewProjectName);
-        ProjectRepository.createNewProject(validNewProjectName);
-
-        load(validNewProjectName);
+    public String getDescription() {
+        return description;
     }
 
-    void load(String chosenProjectName) {
-        //TODO:
-        // ProjectManager.load(chosenProjectName);
-        ProjectRepository.getProject(chosenProjectName);
+    void create(String projectName) {
+        DialogManager.showWaitingToCreateAlert(projectName);
 
-        projectManager.setProjectName(chosenProjectName);
-        projectManager.setProjectState(new SavedProjectState(projectManager));
-        MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                //TODO: ProjectManager.createNewProject(projectName);
+                ProjectRepository.createNewProject(projectName);
+
+                DialogManager.disposeOfWaitingDialog();
+
+                load(projectName);
+            }
+        };
+        thread.start();
+
+
+    }
+
+    void load(String projectName) {
+        DialogManager.showWaitingToLoadAlert(projectName);
+
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+
+                //TODO: ProjectManager.load(chosenProjectName);
+                ProjectRepository.getProject(projectName);
+
+                projectManager.setProjectName(projectName);
+                projectManager.setProjectState(new SavedProjectState(projectManager));
+                MainCardManager.changePanel(MainCardManager.TABBED_PANEL);
+
+
+                DialogManager.disposeOfWaitingDialog();
+            }
+        };
+        thread.start();
     }
 
     void save() {
-        //TODO:
-        // ProjectManager.save();
-        // ProjectRepository.saveProject();
+        DialogManager.showWaitingToSaveAlert("placeholder");
 
-        load(projectManager.getProjectName());
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                //TODO:
+                // ProjectManager.save();
+                // ProjectRepository.saveProject();
+
+                DialogManager.disposeOfWaitingDialog();
+
+                load(projectManager.getProjectName());
+            }
+        };
+        thread.start();
     }
 
     void close() {

@@ -76,15 +76,20 @@ public class DialogManager {
         }
     }
 
+    public static void showWaitingToCreateAlert(String newProjectName) {
+        WaitDialog.show("Creating", newProjectName);
+    }
+
     public static void showWaitingToSaveAlert(String newProjectName) {
-        WaitDialog.showWaitDialog("Saving", newProjectName);
+        WaitDialog.show("Saving", newProjectName);
     }
 
     public static void showWaitingToLoadAlert(String newProjectName) {
-        WaitDialog.showWaitDialog("Loading", newProjectName);
+        WaitDialog.show("Loading", newProjectName);
     }
 
     public static void disposeOfWaitingDialog() {
+//        WaitDialog.hide();
         WaitDialog.dispose();
     }
 

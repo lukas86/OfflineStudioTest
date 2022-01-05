@@ -12,26 +12,24 @@ import java.util.List;
 
 public class ZoneRepository {
     //TODO: ZONES, kako ločit za kateri projekt gre, da ni potrebno vedno znova nastavljat
-    private static void getZonesOfProject(String projectName) {
+    public static void getAll() {
         try {
-            DBProjectCommunication.setCurrentDB(projectName);
             if (DBProjectCommunication.connectToDB()) {
                 Connection connection = DBProjectCommunication.getDBConnection();
 
-                String sql = "SELECT * FROM zones ORDER BY zone_id ASC";
+                String sql = "SELECT * FROM zones ORDER BY zone_number ASC";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 ArrayList<Zone> zones = new ArrayList<>();
 
-                System.out.println("project: " + projectName + " contains panels:");
                 while (resultSet.next()) {
-                    int id = resultSet.getInt(1);
+                    int zone_number = resultSet.getInt(1);
                     String description = resultSet.getString(2);
+                    int panel_id = resultSet.getInt(3);
 
-
-                    Zone zone = new Zone(id, description);
+                    Zone zone = new Zone(zone_number, description, panel_id);
 
                     zones.add(zone);
                     System.out.println(zone);
@@ -39,35 +37,36 @@ public class ZoneRepository {
 
                 DBProjectCommunication.closeDBResources(resultSet, preparedStatement, connection);
             } else {
-                System.out.println("Can not connect to " + projectName + " database");
+                //TODO: odstranit?
+                System.out.println("Can not connect to database");
             }
         } catch(Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public static void updateZonesOfProject(String projectName, List<Zone> zones) {
+    public static void updateZones(List<Zone> zones) {
         try {
-            DBProjectCommunication.setCurrentDB(projectName);
             if (DBProjectCommunication.connectToDB()) {
                 Connection connection = DBProjectCommunication.getDBConnection();
 
                 ArrayList<Panel> panelList = new ArrayList<>();
 
-                String UPDATE_PANEL_SQL = "UPDATE panels SET panel_description = ?, local_panel = ?, is_active = ? FROM WHERE panel_id = ?";
+                String UPDATE_PANEL_SQL = "UPDATE zones SET zone_number = ?, description = ?, panel_id = ?";
 
                 //TODO: raje upsert?
-                String UPSERT_PANEL_SQL = "INSERT INTO zones(zone_id, zone_description) " +
-                        "VALUES (?, ?) " +
-                        "ON CONFLICT (zone_id) " +
-                        "DO UPDATE SET zone_description = EXCLUDED.zone_description";
+                String UPSERT_PANEL_SQL = "INSERT INTO zones(zone_number, description, panel_id) " +
+                        "VALUES (?, ?, ?) " +
+                        "ON CONFLICT (zone_number) " +
+                        "DO UPDATE SET description = EXCLUDED.description, panel_id = EXCLUDED.panel_id";
 
                 PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PANEL_SQL);
 
                 for(Zone zone : zones) {
                     if(zone != null) {
-                        preparedStatement.setInt(1, zone.getId());
+                        preparedStatement.setInt(1, zone.getZoneNumber());
                         preparedStatement.setString(2, zone.getDescription());
+                        preparedStatement.setInt(3, zone.getPanelId());
                         preparedStatement.executeQuery();
                     }
                 }
@@ -81,7 +80,7 @@ public class ZoneRepository {
 
                 DBProjectCommunication.closeDBResources(null, preparedStatement, connection);
             } else {
-                System.out.println("Can not connect to " + projectName + " database");
+                System.out.println("Can not connect to database");
             }
         } catch(Exception ex) {
             ex.printStackTrace();

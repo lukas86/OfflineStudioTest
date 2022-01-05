@@ -1,7 +1,7 @@
 package repository;
 
+import DB.DBProjectCommunication;
 import DB.DBServerCommunication;
-import gui.dialog.DialogManager;
 
 import java.io.File;
 import java.sql.Connection;
@@ -13,15 +13,14 @@ public class ProjectRepository {
 
     public static void createNewProject(String projectName) {
         try {
-            System.out.println("STARTED creating new project");
-
             ProcessBuilder builder = new ProcessBuilder();
             builder.command("cmd.exe", "/c", "createProject.bat", projectName);
             builder.directory(new File("c:\\OfflineStudioTest"));
             Process p = builder.start();
-
             int exitValue = p.waitFor();
-            System.out.println("FINISHED creating new project; exitValue="+exitValue);
+            if(exitValue > 0) {
+                System.out.println("Error when executing script createProject.bat exit: " + exitValue);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -34,7 +33,7 @@ public class ProjectRepository {
                 Connection connection = DBServerCommunication.getConnection();
 
                 PreparedStatement preparedStatement = connection
-                        .prepareStatement("SELECT datname FROM pg_database WHERE datistemplate = false");
+                        .prepareStatement("SELECT datname FROM pg_database WHERE datistemplate = false AND NOT datname = 'postgres'");
 
                 ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -49,6 +48,7 @@ public class ProjectRepository {
 
                 return projectArray;
             } else {
+                //TODO pobrisat?
                 System.out.println("Can not connect to db");
             }
         } catch (Exception ex) {
@@ -58,27 +58,19 @@ public class ProjectRepository {
     }
 
     public static void getProject(String projectName) {
-
-        DialogManager.showWaitingToSaveAlert(projectName);
-
+        DBProjectCommunication.setCurrentDB(projectName);
+        //TODO: v ločenem threadu?
 //        //TODO: return Project
-//        SettingRepository.getSettingsOfProject(projectName);
-//
-//        PanelRepository.getPanelsOfProject(projectName);
-//        //TODO: get zones
-//        //TODO: get modules
-
-        //TODO: temp
-        try {
-            Thread.sleep(5000);
-        } catch(Exception ex) {
-
-        }
-        DialogManager.disposeOfWaitingDialog();
+        PanelSettingRepository.getAll();
+        PanelRepository.getAll();
+        ModuleRepository.getAll();
+        ZoneRepository.getAll();
     }
 
     public static void updateProject(String projectName) {
         //TODO: kako spremenit ime projekta če hranimo samo obstoječe ime ne prejšnjo?
+        //DBProjectCommunication.setCurrentDB(projectName);
+
 //        DialogManager.showWaitingToLoadAlert(projectName);
 //        DialogManager.disposeOfWaitingDialog();
     }

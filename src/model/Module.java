@@ -1,51 +1,37 @@
 package model;
 
 public class Module {
-    int localId;
-    int globalId;
-    String description;
-    int type;
-    int panelId;
 
+    private int idLocal;
+    private int idGlobal;
+    private int panelId;
+    private int moduleTypeId;
+    private boolean isActive;
+    private String moduleDescription;
 
-    public Module(int localId, int globalId, String description, int type, int panelId) {
-        this.localId = localId;
-        this.globalId = globalId;
-        this.description = description;
-        this.type = type;
+    public Module(int idLocal, int idGlobal, int panelId, int moduleTypeId, boolean isActive, String moduleDescription) {
+        this.idLocal = idLocal;
+        this.idGlobal = idGlobal;
         this.panelId = panelId;
+        this.moduleTypeId = moduleTypeId;
+        this.isActive = isActive;
+        this.moduleDescription = moduleDescription;
     }
 
-    public int getLocalId() {
-        return localId;
+    public int getIdLocal() {
+        return idLocal;
     }
 
-    public void setLocalId(int localId) {
-        this.localId = localId;
+    public void setIdLocal(int idLocal) {
+        this.idLocal = idLocal;
     }
 
-    public int getGlobalId() {
-        return globalId;
+    public int getIdGlobal() {
+        return idGlobal;
     }
 
-    public void setGlobalId(int globalId) {
-        this.globalId = globalId;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
+    public void setIdGlobal(int idGlobal) {
+        this.idGlobal = idGlobal;
     }
 
     public int getPanelId() {
@@ -56,14 +42,39 @@ public class Module {
         this.panelId = panelId;
     }
 
+    public int getModuleTypeId() {
+        return moduleTypeId;
+    }
+
+    public void setModuleTypeId(int moduleTypeId) {
+        this.moduleTypeId = moduleTypeId;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public String getModuleDescription() {
+        return moduleDescription;
+    }
+
+    public void setModuleDescription(String moduleDescription) {
+        this.moduleDescription = moduleDescription;
+    }
+
     @Override
     public String toString() {
         return "Module{" +
-                "localId=" + localId +
-                ", globalId=" + globalId +
-                ", description='" + description + '\'' +
-                ", type=" + type +
+                "idLocal=" + idLocal +
+                ", idGlobal=" + idGlobal +
                 ", panelId=" + panelId +
+                ", moduleTypeId=" + moduleTypeId +
+                ", isActive=" + isActive +
+                ", moduleDescription='" + moduleDescription + '\'' +
                 '}';
     }
 }
